@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Validação de Formulário</title>
+    <style>
+        .error {
+            color: red;
+            font-size: 0.8em;
+            margin-top: 5px;
+        }
+        input.invalid {
+            border: 1px solid red;
+        }
+    </style>
+</head>
+<body>
+    <form id="meuFormulario">
+        <div>
+            <label for="numero1">Número 1:</label>
+            <input type="text" id="numero1" class="numero-input" required>
+            <div class="error" id="error-numero1"></div>
+        </div>
+        
+        <div>
+            <label for="numero2">Número 2 (divisor):</label>
+            <input type="text" id="numero2" class="numero-input" required>
+            <div class="error" id="error-numero2"></div>
+        </div>
+        
+        <button type="submit">Calcular Divisão</button>
+    </form>
+
+    <script src="validacao.js"></script>
+</body>
+</html>
