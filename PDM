@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Validação de Formulário</title>
+    <style>
+        .error {
+            color: red;
+            font-size: 0.8em;
+            margin-top: 5px;
+        }
+        input.invalid {
+            border: 1px solid red;
+        }
+    </style>
+</head>
+<body>
+    <form id="meuFormulario">
+        <div>
+            <label for="numero1">Número 1:</label>
+            <input type="text" id="numero1" class="numero-input" required>
+            <div class="error" id="error-numero1"></div>
+        </div>
+        
+        <div>
+            <label for="numero2">Número 2 (divisor):</label>
+            <input type="text" id="numero2" class="numero-input" required>
+            <div class="error" id="error-numero2"></div>
+        </div>
+        
+        <button type="submit">Calcular Divisão</button>
+    </form>
+
+    <script src="validacao.js"></script>
+</body>
+</html>
+document.addEventListener('DOMContentLoaded', function() {
+    
+    const formulario = document.getElementById('meuFormulario');
+    
+    
+    const inputsNumericos = document.querySelectorAll('.numero-input');
+    
+    
+    inputsNumericos.forEach(input => {
+        
+        input.addEventListener('input', function(e) {
+            this.value = this.value.replace(/[^0-9]/g, '');
+        });
+        
+        
+        input.addEventListener('blur', validarCampo);
+    });
+    
+   
+    formulario.addEventListener('submit', function(e) {
+        let formularioValido = true;
+        
+        
+        inputsNumericos.forEach(input => {
+            if (!validarCampo({ target: input })) {
+                formularioValido = false;
+            }
+        });
+        
+        
+        const divisor = document.getElementById('numero2');
+        if (divisor.value === '0') {
+            mostrarErro(divisor, 'O divisor não pode ser zero');
+            formularioValido = false;
+        }
+        
+        
+        if (!formularioValido) {
+            e.preventDefault();
+        }
+    });
+    
+    
+    function validarCampo(e) {
+        const campo = e.target;
+        const valor = campo.value.trim();
+        
+        
+        if (valor === '') {
+            mostrarErro(campo, 'Este campo é obrigatório');
+            return false;
+        }
+        
+       
+        if (isNaN(valor) || valor === '') {
+            mostrarErro(campo, 'Por favor, insira um número válido');
+            return false;
+        }
+        
+       
+            limparErro(campo);
+        return true;
+    }
+    
+    
+    function mostrarErro(campo, mensagem) {
+        const errorElement = document.getElementById(`error-${campo.id}`);
+        campo.classList.add('invalid');
+        errorElement.textContent = mensagem;
+    }
+    
+    
+    function limparErro(campo) {
+        const errorElement = document.getElementById(`error-${campo.id}`);
+        campo.classList.remove('invalid');
+        errorElement.textContent = '';
+    }
+});
